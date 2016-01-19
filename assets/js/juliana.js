@@ -263,6 +263,8 @@ Receipt = {
                 rfid_data: rfid
             };
 
+            $("#pay-now").attr("disabled", false);
+
             var countdown = Settings.countdown - 1;
             $('#payment-countdown').text(countdown + 1);
             Receipt.counterInterval = setInterval(function () {
@@ -276,6 +278,7 @@ Receipt = {
     },
     payNow: function () {
         console.log('Processing payment now.');
+        $("#pay-now").attr("disabled", true);
         var rpcRequest = {
             jsonrpc: '2.0',
             method: 'juliana.order.save',
@@ -453,7 +456,9 @@ $(function () {
                 State.toggleTo(State.SALES);
                 break;
             case 'payNow':
-                Receipt.payNow();
+                if(!$(this).attr("disabled")){
+                    Receipt.payNow();
+                }
                 break;
             case 'ok':
                 State.toggleTo(State.SALES);
